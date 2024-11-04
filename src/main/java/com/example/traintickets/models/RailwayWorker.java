@@ -17,7 +17,7 @@ public class RailwayWorker {
     @Column(name = "id_railway_worker")
     private Integer idRailwayWorker;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_station")
     private Station idStation;
 

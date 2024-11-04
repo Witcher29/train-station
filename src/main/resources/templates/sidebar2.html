@@ -6,72 +6,110 @@
       display: flex;
       position: relative; /* Для абсолютного позиционирования кнопки */
     }
+
     .sidebar {
       min-width: 100px; /* Ширина при свёрнутом состоянии */
       max-width: 250px; /* Ширина при развернутом состоянии */
-      background-color: #ffffff;
+      background-color: #f8f9fa; /* Более светлый фон */
       padding: 15px; /* Отступы внутри сайдбара */
       height: 100vh; /* Высота сайдбара */
       position: sticky;
       top: 0;
       transition: transform 0.3s ease; /* Плавная анимация ширины */
       overflow: hidden; /* Скрыть переполнение */
+      border-right: 1px solid #dee2e6; /* Добавление границы справа */
     }
+
     .sidebar.collapsed {
       transform: translateX(-100%); /* Ширина при свёрнутом состоянии */
     }
+
+    .sidebar h2 {
+      font-size: 1.5rem; /* Размер заголовка */
+      text-align: center; /* Центрирование заголовка */
+      margin-bottom: 20px; /* Отступ снизу */
+    }
+
+    .nav-link {
+      font-size: 1.1rem; /* Увеличение размера шрифта для удобства чтения */
+    }
+
     .container-fluid {
       flex: 1; /* Занимает оставшееся пространство */
       padding: 20px;
       transition: margin-left 0.3s ease; /* Плавная анимация смещения */
     }
+
     .container-fluid.expanded {
-      margin-left: 200px; /* Отступ для раскрытого сайдбара ДО ОСНОВНОГО СОДЕРЖАНИЯ*/
+      margin-left: 250px; /* Отступ для раскрытого сайдбара ДО ОСНОВНОГО СОДЕРЖАНИЯ */
     }
+
     .container-fluid.collapsed {
-      margin-left: 80px; /* Отступ для свёрнутого сайдбара ДО ОСНОВНОГО СОДЕРЖАНИЯ*/
+      margin-left: 80px; /* Отступ для свёрнутого сайдбара ДО ОСНОВНОГО СОДЕРЖАНИЯ */
     }
+
     .toggle-btn {
       position: absolute; /* Размещаем кнопку для сворачивания */
       left: 30px;
       top: 20px; /* Отступ сверху */
       z-index: 100; /* Поверх всех элементов */
     }
+
+    .nav-item {
+      margin-bottom: 10px; /* Отступ между элементами навигации */
+    }
+
+    .nav-link.active {
+      font-weight: bold; /* Жирный текст для активной ссылки */
+    }
   </style>
-  <button class="btn btn-primary toggle-btn">Sidebar</button>
+
+  <button class="btn btn-dark toggle-btn">Menu</button> <!-- Улучшенная кнопка -->
+
   <div class="sidebar">
-    <h2><br></h2>
+    <h2><br></h2> <!-- Заголовок сайдбара -->
     <ul class="nav flex-column">
       <li class="nav-item">
-        <a class="nav-link active" href="/routes">Trains on routes</a>
+        <a class="nav-link active" href="/routes">🚆 Trains on routes</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/passenger-form">Enter new passenger</a>
+        <a class="nav-link" href="/all-stop-points">📍 All stop points</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/set-delay">Set delay for trains</a>
+        <a class="nav-link" href="/passenger-form">👤 Enter new passenger</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/subscribe-to-vip-hall">Subscribe to Vip Hall</a>
+        <a class="nav-link" href="/set-delay">⏰ Set delay for trains</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/find-id-passenger">Define Passenger's ID</a>
+        <a class="nav-link" href="/subscribe-to-vip-hall">🎟️ Subscribe to Vip Hall</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/">Hello page:)</a>
+        <a class="nav-link" href="/find-id-passenger">🔍 Define Passenger's ID</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/waiting-hall">🏢 Visit Waiting Hall</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/personal-manager">🕰️ Personal Manager</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/">👋 Hello page</a>
       </li>
     </ul>
   </div>
+
   <div class="container-fluid">
     <div class="content">
+      <!-- Основное содержимое страницы будет тут -->
     </div>
   </div>
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     $(document).ready(function() {
       // Установка начального состояния
       $('.container-fluid').addClass('expanded');
-
       $('.toggle-btn').on('click', function() {
         $('.sidebar').toggleClass('collapsed'); // Переключаем класс у сайдбара
         $('.container-fluid').toggleClass('expanded collapsed'); // Переключаем классы у основного контента

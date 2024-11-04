@@ -1,18 +1,15 @@
 package com.example.traintickets.controllers;
 
-import com.example.traintickets.models.Passenger;
-import com.example.traintickets.models.Route;
-import com.example.traintickets.models.VipHall;
-import com.example.traintickets.repositories.PassengerRepository;
-import com.example.traintickets.repositories.RouteRepository;
-import com.example.traintickets.repositories.TrainRepository;
-import com.example.traintickets.repositories.VipHallRepository;
+import com.example.traintickets.models.*;
+import com.example.traintickets.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 public class MainController {
@@ -25,6 +22,12 @@ public class MainController {
     PassengerRepository passengerRepository;
     @Autowired
     VipHallRepository vipHallRepository;
+    @Autowired
+    WaitingHallRepository waitingHallRepository;
+    @Autowired
+    RailwayWorkerRepository railwayWorkerRepository;
+    @Autowired
+    StationRepository stationRepository;
 
     private String message = null;
     @GetMapping("/")
@@ -61,14 +64,20 @@ public class MainController {
         return "subscribeToVipHall";
     }
     @PostMapping("/subscribe-to-vip-hall")
-    public String subscribeToVipHall(@RequestParam Integer idPassenger, @RequestParam Integer idVipHall, Model model) {
+    public String subscribeToVipHall(@RequestParam Integer idPassenger, @RequestParam Integer numberOfHall, Model model) {
         Passenger passenger = passengerRepository.findByIdPassenger(idPassenger);
-        VipHall vipHall = vipHallRepository.findByIdVipHall(idVipHall);
-        passenger.setIdVipHall(vipHall);
-        passengerRepository.save(passenger);
-        String fio =  passenger.getSurname() + " " + passenger.getName() + " " + passenger.getSecondName();
-        message = "Passenger " + fio + " was subscribed to Vip Hall with ID: " + idVipHall;
-        System.out.println(message);
+        if (passenger == null) {
+            message = "Uncorrect passenger ID.";
+            return "redirect:/subscribe-to-vip-hall";
+        }
+        VipHall vipHall = vipHallRepository.findByNumberOfHall(numberOfHall);
+        if (vipHall != null) {
+            passenger.setIdVipHall(vipHall);
+            passengerRepository.save(passenger);
+            String fio =  passenger.getSurname() + " " + passenger.getName() + " " + passenger.getSecondName();
+            message = "Passenger " + fio + " was subscribed to Vip Hall " + numberOfHall;
+        } else
+            message = "Uncorrect number of Vip Hall.";
         return "redirect:/subscribe-to-vip-hall";
     }
 
@@ -103,5 +112,57 @@ public class MainController {
         else
             message = "We have found someone :)";
         return "redirect:/find-id-passenger";
+    }
+
+    @GetMapping("/waiting-hall")
+    public String waitingHallPage(Model model) {
+        List<WaitingHall> waitingHallList = waitingHallRepository.findAll();
+        model.addAttribute("halls", waitingHallList);
+        return "waitingHall";
+    }
+
+    @GetMapping("/personal-manager")
+    public String personalManagerPage(Model model) {
+        List<RailwayWorker> railwayWorkerList = railwayWorkerRepository.findAll();
+        model.addAttribute("workers", railwayWorkerList);
+        return "personalManager";
+    }
+
+    @GetMapping("/add-worker")
+    public String showAddWorkerForm(Model model) {
+        model.addAttribute("worker", new RailwayWorker());
+        model.addAttribute("message", message);
+        message = null;
+        return "addWorker";
+    }
+
+    @PostMapping("/add-worker")
+    public String addWorker(@ModelAttribute RailwayWorker worker, @RequestParam Integer idStation, Model model) {
+        Set<Integer> setOfStationId = stationRepository.findAll().stream().map(n -> n.getIdStation()).collect(Collectors.toSet());
+        if (setOfStationId.contains(idStation)) {
+            worker.setIdStation(stationRepository.findByIdStation(idStation));
+            railwayWorkerRepository.save(worker);
+            message = "Worker was saved successfully";
+        } else
+            message = "We do not have station with ID: " + idStation;
+        return "redirect:add-worker";
+    }
+
+    @GetMapping("/delete-worker")
+    public String showDeleteWorkerForm(Model model) {
+        model.addAttribute("message", message);
+        message = null;
+        return "deleteWorker";
+    }
+
+    @PostMapping("/delete-worker")
+    public String deleteWorker(@RequestParam Integer workerId, Model model) {
+        RailwayWorker railwayWorker = railwayWorkerRepository.findByIdRailwayWorker(workerId);
+        if (railwayWorker != null) {
+            railwayWorkerRepository.delete(railwayWorker);
+            message = "Delete was successful. There is not " + railwayWorker.getSurname() + " " + railwayWorker.getName() + " " + railwayWorker.getSecondName() + " anymore :(";
+        } else
+            message = "We do not have worker with ID: " + workerId;
+        return "redirect:/delete-worker";
     }
 }

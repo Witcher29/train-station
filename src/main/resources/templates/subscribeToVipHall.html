@@ -13,8 +13,8 @@
     <div class="mb-3">
       <label for="idPassenger" class="form-label">ID of passenger:</label>
       <input type="number" class="form-control" id="idPassenger" name="idPassenger" required>
-      <label for="id_vip_hall" class="form-label">ID of Vip hall:</label>
-      <input type="number" class="form-control" id="id_vip_hall" name="idVipHall" required>
+      <label for="numberOfHall" class="form-label">ID of Vip hall:</label>
+      <input type="number" class="form-control" id="numberOfHall" name="numberOfHall" required>
     </div>
     <button type="submit" class="btn btn-primary">Send</button>
   </form>
@@ -29,16 +29,20 @@
   <table class="table table-striped">
     <thead>
     <tr>
-      <th>ID of Vip hall</th>
-      <th>Total seats</th>
+      <th>Number of Vip hall</th>
+      <th>TV</th>
       <th>Free Wi-Fi access</th>
+      <th>Comfortable sofa with table</th>
+      <th>Vending machine with food</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="vipHall : ${vipHalls}">
-      <td th:text="${vipHall.idVipHall}"></td>
-      <td th:text="${vipHall.quantityOfVipsWhoCanBeHere}"></td>
+      <td th:text="${vipHall.numberOfHall}"></td>
+      <td th:text="${vipHall.tv}"></td>
       <td th:text="${vipHall.wifiAccess}"></td>
+      <td th:text="${vipHall.sofaWithTable}"></td>
+      <td th:text="${vipHall.snackMachine}"></td>
     </tr>
     </tbody>
   </table>

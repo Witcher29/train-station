@@ -21,14 +21,20 @@ public class VipHall {
     @JoinColumn(name = "id_station")
     private Station idStation;
 
-    @Column(name = "free_capacity")
-    private Integer freeCapacity;
+    @Column(name = "sofa_with_table")
+    private String sofaWithTable;
 
     @Column(name = "wifi_access", length = 4)
     private String wifiAccess;
 
-    @Column(name = "quantity_of_vips_who_can_be_here")
-    private Integer quantityOfVipsWhoCanBeHere;
+    @Column(name = "tv")
+    private String tv;
+
+    @Column(name = "snack_machine")
+    private String snackMachine;
+
+    @Column(name = "number_of_hall")
+    private Integer numberOfHall;
 
 }
 

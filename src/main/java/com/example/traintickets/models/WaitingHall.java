@@ -24,10 +24,7 @@ public class WaitingHall {
     @JoinColumn(name = "id_station", nullable = false)
     private Station idStation;
 
-    @Column(name = "free_capacity")
-    private Integer freeCapacity;
-
-    @Column(name = "human_capacity_now")
-    private Integer humanCapacityNow;
+    @Column(name = "total_seats")
+    private Integer totalSeats;
 
 }
