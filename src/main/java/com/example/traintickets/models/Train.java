@@ -17,6 +17,9 @@ public class Train {
     @Column(name = "id_train")
     private int idTrain;
 
+    @Column(name = "train_number")
+    private Integer trainNumber;
+
     @Column(name = "route_name", length = 50)
     private String routeName;
 

@@ -9,7 +9,7 @@
     .sidebar {
       min-width: 100px; /* Ширина при свёрнутом состоянии */
       max-width: 250px; /* Ширина при развернутом состоянии */
-      background-color: #f8f9fa;
+      background-color: #ffffff;
       padding: 15px; /* Отступы внутри сайдбара */
       height: 100vh; /* Высота сайдбара */
       position: sticky;
@@ -33,7 +33,7 @@
     }
     .toggle-btn {
       position: absolute; /* Размещаем кнопку для сворачивания */
-      left: 0;
+      left: 30px;
       top: 20px; /* Отступ сверху */
       z-index: 100; /* Поверх всех элементов */
     }
@@ -43,26 +43,27 @@
     <h2><br></h2>
     <ul class="nav flex-column">
       <li class="nav-item">
-        <a class="nav-link active" href="#">Dashboard</a>
+        <a class="nav-link active" href="/routes">Trains on routes</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Profile</a>
+        <a class="nav-link" href="/passenger-form">Enter new passenger</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Messages</a>
+        <a class="nav-link" href="/set-delay">Set delay for trains</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Settings</a>
+        <a class="nav-link" href="/subscribe-to-vip-hall">Subscribe to Vip Hall</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Logout</a>
+        <a class="nav-link" href="/find-id-passenger">Define Passenger's ID</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/">Hello page:)</a>
       </li>
     </ul>
   </div>
   <div class="container-fluid">
     <div class="content">
-      <h1>Main Content</h1>
-      <p>This is the main area of the page where content goes.</p>
     </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

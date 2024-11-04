@@ -3,18 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <title>Hello</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <style>
+        body {
+            display: flex; /* Используем flexbox для расположения сайдбара и основного контента */
+            margin: 0; /* Убираем отступы по умолчанию */
+            height: 100vh; /* Высота body */
+            background-color: #f8f9fa; /* Цвет фона */
+        }
+        .sidebar {
+            width: 250px; /* Ширина сайдбара */
+            background-color: #343a40; /* Цвет фона сайдбара */
+            color: white;
+            padding: 20px;
+        }
+        .banner {
+            flex: 1; /* Занимает оставшееся пространство */
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Petrozavodsk_06-2017_img37_Railway_station.jpg/1200px-Petrozavodsk_06-2017_img37_Railway_station.jpg');
+            background-size: cover;
+            background-position: center; /* Центрируем изображение */
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+            font-family: 'Arial', sans-serif;
+            position: relative;
+        }
+        .banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5); /* Затемнение фона */
+            z-index: 0; /* Устанавливаем z-index ниже текста */
+        }
+        .banner h1, .banner p {
+            position: relative;
+            z-index: 1; /* Устанавливаем z-index выше затемнения */
+        }
+        .banner h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        .banner p {
+            font-size: 1.5rem;
+        }
+        </style>
+        </head>
 <body>
-<!-- Встраиваем сайдбар -->
-<div th:replace="sidebar2 :: sidebar"></div> <!--sidebarforinsert - имя файла; sidebar - имя фрагмента из th:fragment-->
-<!--<div class="container-fluid">-->
-<!--    <div class="content">-->
-<!--        <h1>Main Content</h1>-->
-<!--        <p>This is the main area of the page where content goes.</p>-->
-<!--    </div>-->
-<!--</div>-->
-<h1>Main Content</h1><br>
-<p>This is the main area of the page where content goes.</p>
+    <!-- Встраиваем сайдбар -->
+    <div class="sidebar" th:replace="sidebar2 :: sidebar"></div> <!-- sidebarforinsert - имя файла; sidebar - имя фрагмента из th:fragment -->
+    <div class="banner">
+    <h1>Welcome to the Train Station Portal!</h1>
+    <p>Your journey begins here.</p>
+    </div>
 </body>
 </html>

@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Time;
-
 @NoArgsConstructor
 @Setter
 @Getter
@@ -20,7 +18,7 @@ public class Schedule {
     private int idSchedule;
 
     @Column(name = "duration")
-    private Time duration;
+    private String duration;
 
     @Column(name = "start_point", length = 50)
     private String startPoint;
