@@ -2,13 +2,15 @@ package com.example.traintickets.controllers;
 
 import com.example.traintickets.models.*;
 import com.example.traintickets.repositories.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Time;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -40,8 +42,31 @@ public class MainController {
     }
     @GetMapping("/routes")
     public String getRoute(Model model) {
+        @Getter
+        @Setter
+        class InnerRoute {
+            public Route route;
+            public TrainCard trainCard;
+
+            public InnerRoute(Route route, TrainCard trainCard) {
+                this.route = route;
+                this.trainCard = trainCard;
+            }
+        }
+
         List<Route> listOfRoutes = routeRepository.findAll();
-        model.addAttribute("listOfRoutes", listOfRoutes);
+        List<Train> trainList = listOfRoutes.stream().map(n -> n.getIdTrain()).toList();
+        List<List<TrainCard>> trainCardListHard = trainList.stream().map(n -> trainCardRepository.findAllByIdTrain(n)).toList();
+        List<TrainCard> trainCardList = trainCardListHard.stream().flatMap(n -> n.stream()).toList();
+        List<InnerRoute> innerRouteList = new ArrayList<>();
+        for (int i = 0; i < listOfRoutes.size(); i++) {
+            int j = i;
+            while(listOfRoutes.get(i).getIdTrain().getIdTrain() != trainCardList.get(j).getIdTrain().getIdTrain())
+                j ++;
+            innerRouteList.add(new InnerRoute(listOfRoutes.get(i), trainCardList.get(j)));
+        }
+//        innerRouteList.forEach(n -> System.out.println("ID train from route " + n.route.getIdTrain().getIdTrain() + " ID train from train card " + n.trainCard.getIdTrain().getIdTrain() + " ID train card " + n.trainCard.getIdTrainCard()));
+        model.addAttribute("listOfRoutes", innerRouteList);
         return "routes";
     }
 

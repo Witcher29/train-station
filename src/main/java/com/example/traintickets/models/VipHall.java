@@ -36,5 +36,8 @@ public class VipHall {
     @Column(name = "number_of_hall")
     private Integer numberOfHall;
 
+    @Column(name = "cost")
+    private Integer cost;
+
 }
 

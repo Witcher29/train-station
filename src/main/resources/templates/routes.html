@@ -11,21 +11,23 @@
 <div class="container">
     <h1>Here you can see your train on route<br></h1>
 
-    <table class="table table-striped">
-        <thead>
+    <table class="table table-bordered table-striped table-hover ">
+        <thead class="thead-dark">
         <tr>
             <th>Number of train</th>
             <th>Train's route</th>
             <th>Route Number</th>
             <th>Numbering of wagoons</th>
+            <th>Time of departure</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="route, iterStat : ${listOfRoutes}">
-            <td th:text="${route.idTrain.trainNumber}"></td>
-            <td th:text="${route.idTrain.routeName}"></td>
-            <td th:text="${route.number}"></td>
-            <td th:text="${route.idTrain.numberingOfWagons}"></td>
+            <td th:text="${route.route.idTrain.trainNumber}"></td>
+            <td th:text="${route.route.idTrain.routeName}"></td>
+            <td th:text="${route.route.number}"></td>
+            <td th:text="${route.route.idTrain.numberingOfWagons}"></td>
+            <td th:text="${route.trainCard.idScheduleCard.timeOfDeparture}"></td>
         </tr>
         </tbody>
     </table>
