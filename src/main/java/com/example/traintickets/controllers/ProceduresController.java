@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 public class ProceduresController {
@@ -29,20 +31,26 @@ public class ProceduresController {
     @Autowired
     ScheduleCardRepository scheduleCardRepository;
     private String message = null;
-    @PostMapping("/set-delay")
+    @PostMapping("/reset-delay")
     public String setDelay(@RequestParam("id_train") int idTrain, Model model) {
-        procedureRepo.setTrainCardDelayToZero(idTrain);
-        message = "Procedure executed successfully for Train ID: " + idTrain;
-        return "redirect:/set-delay";
+        Set<Integer> setOfIdTrains = trainCardRepository.findAll().stream().map(n -> n.getIdTrain().getIdTrain()).collect(Collectors.toSet());
+        if(setOfIdTrains.contains(idTrain)) {
+            procedureRepo.setTrainCardDelayToZero(idTrain);
+            message = "Procedure executed successfully for Train ID: " + idTrain;
+        }
+        else
+            message = "There is no train with ID: " + idTrain;
+        return "redirect:/reset-delay";
     }
 
-    @GetMapping("/set-delay")
+    @GetMapping("/reset-delay")
     public String setDelayPage(Model model) {
         model.addAttribute("message", message);
         message = null;
         List<TrainCard> trainCardList = trainCardRepository.findAll();
+        trainCardList = trainCardList.stream().sorted((o1, o2) -> o1.getIdTrain().getIdTrain() - o2.getIdTrain().getIdTrain()).collect(Collectors.toList());
         model.addAttribute("trainCards", trainCardList);
-        return "trainCardDelay";
+        return "resetDelay";
     }
 
     @GetMapping("/all-stop-points")

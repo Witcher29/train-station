@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Time;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,6 +30,8 @@ public class MainController {
     RailwayWorkerRepository railwayWorkerRepository;
     @Autowired
     StationRepository stationRepository;
+    @Autowired
+    TrainCardRepository trainCardRepository;
 
     private String message = null;
     @GetMapping("/")
@@ -164,5 +168,38 @@ public class MainController {
         } else
             message = "We do not have worker with ID: " + workerId;
         return "redirect:/delete-worker";
+    }
+
+    @GetMapping("/define-delay")
+    public String delayManagerPage(Model model) {
+        List<TrainCard> trainCardList = trainCardRepository.findAll();
+        trainCardList = trainCardList.stream().sorted((o1, o2) -> o1.getIdTrain().getIdTrain() - o2.getIdTrain().getIdTrain()).collect(Collectors.toList());
+        model.addAttribute("trainCards", trainCardList);
+        return "delayManager";
+    }
+
+    @GetMapping("/set-delay")
+    public String setDelayPage (Model model) {
+        List<TrainCard> trainCardList = trainCardRepository.findAll();
+        trainCardList = trainCardList.stream().sorted((o1, o2) -> o1.getIdTrain().getIdTrain() - o2.getIdTrain().getIdTrain()).collect(Collectors.toList());
+        model.addAttribute("trainCards", trainCardList);
+        model.addAttribute("message", message);
+        message = null;
+        return "setDelay";
+    }
+
+    @PostMapping("/set-delay")
+    public String setDelay (@RequestParam Integer idTrainCard, @RequestParam String time, Model model) {
+        time += ":00";
+        System.out.println(time);
+        Time time1 = Time.valueOf(time);
+        TrainCard trainCard = trainCardRepository.findByIdTrainCard(idTrainCard);
+        if (trainCard != null) {
+            trainCard.setDelay(time1);
+            trainCardRepository.save(trainCard);
+            message = "Successful set of delay";
+        } else
+            message = "There is no train card with ID: " + idTrainCard;
+        return "redirect:/set-delay";
     }
 }
